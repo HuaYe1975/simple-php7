@@ -1,13 +1,13 @@
 #!/bin/sh
 #########################################################################
 # File Name: start.sh
-# Author: Skiychan
-# Email:  dev@skiy.net
+# Author: Romeo Hua
+# Email:  y-ka@adglobe.co.jp
 # Version:
-# Created Time: 2015/12/13
+# Created Time: 2016/5/18
 #########################################################################
 Nginx_Install_Dir=/usr/local/nginx
-DATA_DIR=/data/www
+DATA_DIR=/data/www/public
 
 set -e
 chown -R www.www $DATA_DIR
@@ -76,7 +76,7 @@ server {
     }
 
     location ~ \.php$ {
-        root           /data/www;
+        root           /data/www/public;
         fastcgi_pass   127.0.0.1:9000;
         fastcgi_index  index.php;
         fastcgi_param  SCRIPT_FILENAME  /\$document_root\$fastcgi_script_name;

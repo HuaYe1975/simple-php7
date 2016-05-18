@@ -132,7 +132,10 @@ RUN cd / && rm -rf /home/nginx-php
 
 #Create web folder
 VOLUME ["/data/www", "/usr/local/nginx/conf/ssl", "/usr/local/nginx/conf/vhost", "/usr/local/php/etc/php.d"]
-ADD index.php /data/www/index.php
+
+RUN mkdir -p /data/www/public
+
+ADD index.php /data/www/public/index.php
 
 
 #Update nginx config
