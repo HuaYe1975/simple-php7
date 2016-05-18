@@ -47,8 +47,7 @@ RUN groupadd -r www && \
 #Download nginx & php
 RUN mkdir -p /home/nginx-php && cd $_ && \
     wget -c -O nginx.tar.gz http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
-    wget -O php.tar.gz http://php.net/distributions/php-$PHP_VERSION.tar.gz && \
-    curl -O -SL https://github.com/xdebug/xdebug/archive/XDEBUG_2_4_0RC3.tar.gz
+    wget -O php.tar.gz http://php.net/distributions/php-$PHP_VERSION.tar.gz
 
 #Make install nginx
 RUN cd /home/nginx-php && \
@@ -114,15 +113,6 @@ RUN cd /home/nginx-php && \
     --without-pear && \
     make && make install
 
-#Add xdebug extension
-RUN cd /home/nginx-php && \
-    tar -zxvf XDEBUG_2_4_0RC3.tar.gz && \
-    cd xdebug-XDEBUG_2_4_0RC3 && \
-    /usr/local/php/bin/phpize && \
-    ./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config && \
-    make && \
-    cp modules/xdebug.so /usr/local/php/lib/php/extensions/no-debug-non-zts-20151012/
-
 RUN cd /home/nginx-php/php-$PHP_VERSION && \
     cp php.ini-production /usr/local/php/etc/php.ini && \
     cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf && \
@@ -144,7 +134,6 @@ RUN cd / && rm -rf /home/nginx-php
 VOLUME ["/data/www", "/usr/local/nginx/conf/ssl", "/usr/local/nginx/conf/vhost", "/usr/local/php/etc/php.d"]
 ADD index.php /data/www/index.php
 
-ADD xdebug.ini /usr/local/php/etc/php.d/xdebug.ini
 
 #Update nginx config
 ADD nginx.conf /usr/local/nginx/conf/nginx.conf
